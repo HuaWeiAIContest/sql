@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "message")
+@Table (name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +15,7 @@ public class Message {
     int userID;
 
     @Column (name = "bot_id")
-    int botID;
+    String botID;
 
     @Column
     String context;
@@ -25,7 +26,7 @@ public class Message {
     @Column
     int status;
 
-    public Message(int userID, int botID, String context, Date sendTime, int status) {
+    public Message(int userID, String botID, String context, Date sendTime, int status) {
         this.userID = userID;
         this.botID = botID;
         this.context = context;
@@ -52,11 +53,11 @@ public class Message {
         this.userID = userID;
     }
 
-    public int getBotID() {
+    public String getBotID() {
         return botID;
     }
 
-    public void setBotID(int botID) {
+    public void setBotID(String botID) {
         this.botID = botID;
     }
 
