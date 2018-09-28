@@ -1,26 +1,22 @@
 package com.xxx.demo.Service;
 
-import com.xxx.demo.Common.Hobby;
-import com.xxx.demo.Entity.Users;
+import com.xxx.demo.Entity.User;
 import com.xxx.demo.Repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service("userService")
 public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public Users addUser (String mail, String password, String nickName, int age, int gender, Date birthday, Hobby hobby1, Hobby hobby2, Hobby hobby3){
-        Users newUser = userRepository.save(new Users(mail,password, nickName,age, gender,birthday,hobby1,hobby2, hobby3));
+    public User addUser (User user){
+        User newUser = userRepository.save(user);
         return newUser;
     }
 
-    public Users searchUser (int userID){
-        Users thisUser = userRepository.searchUserByID(userID);
+    public User searchUser (int userID){
+        User thisUser = userRepository.searchUserByID(userID);
         return thisUser;
     }
 }

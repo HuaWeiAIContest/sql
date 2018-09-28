@@ -6,10 +6,7 @@ import com.xxx.demo.Entity.Message;
 import com.xxx.demo.Service.GetAnswerService;
 import com.xxx.demo.Service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,12 +17,14 @@ import static com.xxx.demo.Common.ResultGenerator.genSuccessResult;
 @RestController
 @CrossOrigin
 public class MessageController {
+
     @Autowired
     MessageService messageService;
 
     @Autowired
     GetAnswerService getAnswerService;
-    @GetMapping("/getMessageRecord")
+
+    @GetMapping("/get-message-record")
     public Response getMessageRecord(@RequestParam int userID,@RequestParam int botID)
     {
         List<Message> messageList = messageService.getMessageRecord(userID,botID);
@@ -37,20 +36,12 @@ public class MessageController {
         }
     }
 
-    @GetMapping("/getResponse")
-    public Response getResponse(@RequestParam String kb,@RequestParam int userID ,@RequestParam String question){
+    @PostMapping("/add-qna")
+    public Response getResponse(@RequestParam String kb,@RequestParam int userID ,@RequestBody String question,@RequestBody String answer){
         try {
-            String response = "";
-            response = getAnswerService.GetAnswers(kb,question);
-            //messageService.addMessage(new Message(userID,kb,question,new Date(),0));
-            //messageService.addMessage(new Message(userID,kb,response,new Date(),1));
-            System.out.print("www");
-            if (response == null)
-                return genFailResult("没有获得结果");
-            else{
-                return genSuccessResult(response);
-            }
-
+            messageService.addMessage(new Message(userID,kb,question,new Date(),0));
+            messageService.addMessage(new Message(userID,kb,answer,new Date(),1));
+            return genSuccessResult("添加成功");
         }
         catch (Exception e) {
             return  genFailResult(e.getCause().getMessage());

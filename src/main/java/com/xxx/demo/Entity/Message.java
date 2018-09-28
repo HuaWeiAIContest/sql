@@ -17,7 +17,7 @@ public class Message {
     @Column (name = "bot_id")
     String botID;
 
-    @Column
+    @Column(columnDefinition = "char(200) character set utf8")
     String context;
 
     @Column (name = "send_time")

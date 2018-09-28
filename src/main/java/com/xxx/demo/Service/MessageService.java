@@ -16,7 +16,6 @@ public class MessageService {
         List<Message> messageList= messageRepository.getMessageRecord(user_id,bot_id);
         return messageList;
     }
-
     public Boolean addMessage(Message message){
         try {
             messageRepository.save(message);
