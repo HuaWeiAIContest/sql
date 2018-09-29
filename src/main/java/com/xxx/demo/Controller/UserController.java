@@ -8,6 +8,7 @@ import com.xxx.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.xxx.demo.Common.ResultGenerator.genFailResult;
@@ -23,7 +24,9 @@ public class UserController {
 
     @PostMapping("/add-user")
     public Response addUser (@RequestBody User thisUser){
+        thisUser.setFavourite("");
         User newUser = userService.addUser(thisUser);
+
         if (newUser == null){
             return genFailResult("添加失败，该邮箱已被注册过");
         }
@@ -57,10 +60,10 @@ public class UserController {
     }
 
     @PostMapping("/set-user-info")
-    public Response setUserInfo(@RequestParam String nickName, @RequestParam Date birthday,@RequestParam int age,@RequestParam int gender,@RequestParam String hobby){
+    public Response setUserInfo(@RequestBody User user){
 
         try {
-            userService.updateUser(nickName,birthday,age,gender, hobby);
+            userService.updateUser(user.getMail(),user.getNickName(),user.getBirthday(),user.getAge(),user.getGender(), user.getHobby());
             return genSuccessResult();
         }
         catch (Exception e){
@@ -68,12 +71,12 @@ public class UserController {
         }
     }
 
-    @GetMapping ("/user-login")
-    public Response getPassword (@RequestParam String mail,@RequestParam String password){
+    @PostMapping ("/user-login")
+    public Response getPassword (@RequestBody User user){
 
         try{
-            String correctPassword = userService.getPassword(mail);
-            if (correctPassword.equals(password)){
+            String correctPassword = userService.getPassword(user.getMail());
+            if (correctPassword.equals(user.getPassword())){
                 return genSuccessResult(true);
             }
             else {
@@ -85,6 +88,70 @@ public class UserController {
         }
 
     }
+
+    @PostMapping("/change-password")
+    public Response changePassword(@RequestBody User user){
+        userService.changePassword(user.getMail(),user.getPassword());
+        String vcode = Random.getRandomNumString(6);
+        try{
+            SendMail sendMail = new SendMail("tql_tql","HuaWei2018","tql_tql@163.com","tql","www");
+            sendMail.send("local",user.getMail(), vcode,"www");
+            return genSuccessResult(vcode);
+        }
+        catch (Exception e){
+            return genFailResult("发送验证邮件失败，请重试");
+        }
+    }
+
+
+    @PostMapping ("/change-favourite")//只用到了userid和favourite
+    public Response changeFavourite(@RequestBody User user){
+        String currentFavourite = userService.getFavourite(user.getMail());
+        String newFavourite= currentFavourite + "," + user.getFavourite();
+        boolean result=false;
+        result = userService.changeFavourite(user.getMail(), newFavourite);
+
+        if (!result){
+            return genFailResult("添加收藏失败，请稍后再试");
+        }
+        else {
+            return genSuccessResult(newFavourite);
+        }
+    }
+
+    @GetMapping ("/get-favourite")
+    public Response getFavourite (@RequestParam String mail){
+        String favourite = userService.getFavourite(mail);
+        if (favourite == null){
+            return genFailResult("获取失败");
+        }
+        else{
+            return genSuccessResult(favourite);
+        }
+    }
+
+    @PostMapping ("/delete-favourite")
+    public Response deleteFavourite(@RequestBody User toDelete){
+        String current = userService.getFavourite(toDelete.getMail());
+        String[] splitCurrent = current.split(",");
+        String afterFavourite="";
+        ArrayList<String> splitCurrentList = new ArrayList<>();
+        for (int i=0;i<splitCurrent.length;i++){
+            splitCurrentList.add(splitCurrent[i]);
+        }
+        splitCurrentList.remove(toDelete.getFavourite());
+        for (int i=0;i<splitCurrentList.size();i++){
+            afterFavourite+=splitCurrentList.get(i)+",";
+        }
+        boolean result = userService.changeFavourite(toDelete.getMail(),afterFavourite);
+        if (result){
+            return genSuccessResult(afterFavourite);
+        }
+        else {
+            return genFailResult("取消收藏失败");
+        }
+    }
+
 
     @GetMapping("/hello")
     public Response hello(){

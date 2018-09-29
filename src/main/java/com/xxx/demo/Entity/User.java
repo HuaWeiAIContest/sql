@@ -1,7 +1,5 @@
 package com.xxx.demo.Entity;
 
-import com.xxx.demo.Common.Hobby;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -32,6 +30,43 @@ public class User {
 
     @Column
     String hobby;
+
+    @Column
+    String favourite;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", age=" + age +
+                ", gender=" + gender +
+                ", birthday=" + birthday +
+                ", hobby='" + hobby + '\'' +
+                ", favourite='" + favourite + '\'' +
+                '}';
+    }
+
+    public String getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(String favourite) {
+        this.favourite = favourite;
+    }
+
+    public User(String mail, String password, String nickName, int age, int gender, Date birthday, String hobby, String favourite) {
+        this.mail = mail;
+        this.password = password;
+        this.nickName = nickName;
+        this.age = age;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.hobby = hobby;
+        this.favourite = favourite;
+    }
 
     public User(String mail, String password, String nickName, int age, int gender, Date birthday, String hobby) {
         this.mail = mail;
@@ -110,17 +145,4 @@ public class User {
         this.hobby = hobby;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userID=" + userID +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", age=" + age +
-                ", gender=" + gender +
-                ", birthday=" + birthday +
-                ", hobby='" + hobby + '\'' +
-                '}';
-    }
 }

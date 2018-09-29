@@ -22,9 +22,25 @@ public interface UserRepository extends JpaRepository<User,Integer>{
 
     @Transactional
     @Modifying
-    @Query(value = "update user set nick_name= ?1, birthday = ?2, age = ?3, gender = ?4, hobby = ?5 where user_id = ?1",nativeQuery = true)
-    public void setUserInfo(String nickName,Date birthday,int age,int gender, String hobby);
+    @Query(value = "update user set nick_name= ?2, birthday = ?3, age = ?4, gender = ?5, hobby = ?6 where mail= ?1",nativeQuery = true)
+    public void setUserInfo(String mail,String nickName,Date birthday,int age,int gender, String hobby);
 
     @Query(value = "select password from user where mail = ?1",nativeQuery = true)
     public String getPassword(String mail);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update user set favourite = ?2 where mail = ?1",nativeQuery = true)
+    public void changeFavourite(String mail,String favourite);
+
+    @Query (value = "select favourite from user where mail = ?1",nativeQuery = true)
+    public String getFavourite(String mail);
+
+    @Transactional
+    @Modifying
+    @Query (value = "update user set password = ?2 where mail = ?1",nativeQuery = true)
+    public void changePassword(String mail,String password);
+
+    @Query (value = "select mail from user where user_id = ?1 ",nativeQuery = true)
+    public String getMail(int userID);
 }
