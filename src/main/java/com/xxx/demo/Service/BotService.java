@@ -19,9 +19,18 @@ public class BotService {
         }
     }
 
-    public String getIntroduction(int botID){
+    public String getBot(int botID){
         try{
-            return botRepository.getIntroduction(botID);
+            return botRepository.getBot(botID);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public String getIntroduction(String name){
+        try{
+            return botRepository.getIntroduction(name);
         }
         catch (Exception e){
             return null;

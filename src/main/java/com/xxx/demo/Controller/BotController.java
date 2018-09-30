@@ -4,7 +4,6 @@ import com.xxx.demo.Common.Response;
 import com.xxx.demo.Entity.Bot;
 import com.xxx.demo.Service.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static com.xxx.demo.Common.ResultGenerator.genFailResult;
@@ -27,9 +26,20 @@ public class BotController {
         }
     }
 
-    @GetMapping ("/get-introduction")
-    public Response getIntroduction (@RequestParam int botID){
-        String result = botService.getIntroduction(botID);
+    @GetMapping ("/get-bot")
+    public Response getBot (@RequestParam int botID){
+        String result = botService.getBot(botID);
+        if (result != null){
+            return genSuccessResult(result);
+        }
+        else {
+            return genFailResult("获取失败");
+        }
+    }
+
+    @GetMapping("/get-introduction")
+    public Response getIntroduction (@RequestParam String name){
+        String result = botService.getIntroduction(name);
         if (result != null){
             return genSuccessResult(result);
         }

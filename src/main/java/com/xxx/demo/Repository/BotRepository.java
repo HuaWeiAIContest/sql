@@ -16,5 +16,10 @@ public interface BotRepository extends JpaRepository<Bot,Integer> {
     public String addBot(String introduction);
 
     @Query(value = "select * from bot where bot_id = ?1 ",nativeQuery = true)
-    public String getIntroduction (int botID);
+    public String getBot(int botID);
+
+    @Query (value = "select introduction from bot where name = ?1 ",nativeQuery = true)
+    public String getIntroduction(String name);
+
+
 }
