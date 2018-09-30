@@ -22,8 +22,8 @@ public class UserService {
         }
     }
 
-    public User searchUser (int userID){
-        User thisUser = userRepository.searchUserByID(userID);
+    public User searchUser (String mail){
+        User thisUser = userRepository.searchUserByMail(mail);
         return thisUser;
     }
 

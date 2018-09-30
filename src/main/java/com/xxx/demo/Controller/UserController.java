@@ -35,9 +35,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/get-user-by-id")
-    public Response getUserByID (@RequestParam int userID){
-        User thisUser = userService.searchUser(userID);
+    @GetMapping("/get-user-by-mail")
+    public Response getUserByID (@RequestParam String mail){
+        User thisUser = userService.searchUser(mail);
         if (thisUser == null){
             return genFailResult("获取失败");
         }

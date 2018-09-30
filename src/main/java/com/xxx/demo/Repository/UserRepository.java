@@ -17,8 +17,8 @@ public interface UserRepository extends JpaRepository<User,Integer>{
     @Query (value = "insert into user set mail = ?1,password = ?2, nick_name = ?3, age = ?4, gender = ?5, birthday = ?6, hobby = ?7",nativeQuery = true)
     public User addUser(String mail, String password, String nickName, int age, int gender, Date birthday, String hobby);
 
-    @Query (value = "SELECT * from user where user_id = ?1",nativeQuery = true)
-    public User searchUserByID (int ID);
+    @Query (value = "SELECT * from user where mail = ?1",nativeQuery = true)
+    public User searchUserByMail (String mail);
 
     @Transactional
     @Modifying
