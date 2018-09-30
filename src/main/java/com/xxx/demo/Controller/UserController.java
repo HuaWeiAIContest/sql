@@ -6,6 +6,7 @@ import com.xxx.demo.Common.SendMail;
 import com.xxx.demo.Entity.User;
 import com.xxx.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
+    @Value("${version}")
+    private String version;
 
     @PostMapping("/add-user")
     public Response addUser (@RequestBody User thisUser){
@@ -153,8 +155,8 @@ public class UserController {
     }
 
 
-    @GetMapping("/hello")
-    public Response hello(){
-        return genSuccessResult ("Y");
+    @GetMapping("/get-version")
+    public Response getVersion(){
+        return genSuccessResult (version);
     }
 }
