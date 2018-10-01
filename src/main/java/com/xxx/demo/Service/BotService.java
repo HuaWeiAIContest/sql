@@ -5,6 +5,8 @@ import com.xxx.demo.Repository.BotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("botService")
 public class BotService {
     @Autowired
@@ -31,6 +33,15 @@ public class BotService {
     public String getIntroduction(String name){
         try{
             return botRepository.getIntroduction(name);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public List<Bot> getAllBot(){
+        try {
+            return botRepository.getAllBot();
         }
         catch (Exception e){
             return null;

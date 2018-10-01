@@ -6,6 +6,8 @@ import com.xxx.demo.Service.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.xxx.demo.Common.ResultGenerator.genFailResult;
 import static com.xxx.demo.Common.ResultGenerator.genSuccessResult;
 
@@ -45,6 +47,17 @@ public class BotController {
         }
         else {
             return genFailResult("获取失败");
+        }
+    }
+
+    @GetMapping("/get-all-bot")
+    public Response getAllBot(){
+        List<Bot> botList= botService.getAllBot();
+        if (botList != null){
+            return genSuccessResult(botList);
+        }
+        else {
+            return genFailResult("获取人物列表失败");
         }
     }
 }

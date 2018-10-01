@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface BotRepository extends JpaRepository<Bot,Integer> {
     @Transactional
@@ -21,5 +23,6 @@ public interface BotRepository extends JpaRepository<Bot,Integer> {
     @Query (value = "select introduction from bot where name = ?1 ",nativeQuery = true)
     public String getIntroduction(String name);
 
-
+    @Query (value = "select * from bot ",nativeQuery = true)
+    public List<Bot> getAllBot();
 }

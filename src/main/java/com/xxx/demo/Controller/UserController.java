@@ -108,11 +108,18 @@ public class UserController {
 
     @PostMapping ("/change-favourite")//只用到了userid和favourite
     public Response changeFavourite(@RequestBody User user){
-        String currentFavourite = userService.getFavourite(user.getMail());
-        String newFavourite= currentFavourite + "," + user.getFavourite();
-        boolean result=false;
-        result = userService.changeFavourite(user.getMail(), newFavourite);
-
+        String current = userService.getFavourite(user.getMail());
+        String[] splitCurrent = current.split(",");
+        String newFavourite=current;
+        boolean result=true;
+        ArrayList<String> splitCurrentList = new ArrayList<>();
+        for (int i=0;i<splitCurrent.length;i++){
+            splitCurrentList.add(splitCurrent[i]);
+        }
+        if (!splitCurrentList.contains(user.getFavourite())){
+            newFavourite += "," + user.getFavourite();
+            result = userService.changeFavourite(user.getMail(), newFavourite);
+        }
         if (!result){
             return genFailResult("添加收藏失败，请稍后再试");
         }
